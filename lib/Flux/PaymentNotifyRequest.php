@@ -132,10 +132,11 @@ class Flux_PaymentNotifyRequest {
 	 */
 	public function process()
 	{
+		$allowed_hosts = ['ipn.sandbox.paypal.com', 'notify.paypal.com'];
 		$received_from = gethostbyaddr($this->fetch_ip());
 		$this->logPayPal('Received notification from %s (%s)', $this->fetch_ip(), $received_from);
 
-		if ($received_from == "notify.paypal.com" && $this->verify()) {
+		if (in_array($received_from, $allowed_hosts) && $this->verify()) {
 			$this->logPayPal('Proceeding to validate the authenticity of the transaction...');
 
 			$accountEmails = Flux::config('PayPalReceiverEmails');
@@ -321,7 +322,7 @@ class Flux_PaymentNotifyRequest {
 		else {
 			$this->logPayPal('Transaction invalid, aborting.');
 			
-			if($received_from != "notify.paypal.com" && Flux::config('PaypalHackNotify')){
+			if(!in_array($received_from, $allowed_hosts) && Flux::config('PaypalHackNotify')){
 				require_once 'Flux/Mailer.php';
 				
 				$customArray  = @unserialize(base64_decode((string)$this->ipnVariables->get('custom')));
@@ -338,7 +339,7 @@ class Flux_PaymentNotifyRequest {
 				
 				$tmpl .= "<br><br><br>";
 				$tmpl .= "<p>======= IP Info ========</p>";
-				$tmpl .= nl2br(var_export(['ip' => $this->fetch_ip(), 'host' => $received_from], true));
+				$tmpl .= nl2br(var_export(['ip' => $this->fetch_ip(), 'host' => $recieved_from], true));
 				$tmpl .= "<p>======= End IP Info ========</p>";
 				$tmpl .= "<br><br><br>";
 				$tmpl .= "<p>======= Account Info ========</p>";
@@ -403,7 +404,7 @@ class Flux_PaymentNotifyRequest {
 		$this->logPayPal('Query string: %s', $qString);
 		$this->logPayPal('Establishing connection to PayPal server at %s:80...', $this->ppServer);
 
-		$fp = @fsockopen($this->ppServer, 80, $errno, $errstr, 20);
+		$fp = @fsockopen('ssl://'.$this->ppServer, 443, $errno, $errstr, 20);
 		if (!$fp) {
 			$this->logPayPal("Failed to connect to PayPal server: [%d] %s", $errno, $errstr);
 			return false;
@@ -420,7 +421,7 @@ class Flux_PaymentNotifyRequest {
 			while (!feof($fp) && ($line = trim(fgets($fp))) != '');
 			
 			$line = '';
-			
+
 			// Read until EOF, contains VERIFIED or INVALID.
 			while (!feof($fp)) {
 				$line .= strtoupper(trim(fgets($fp)));
