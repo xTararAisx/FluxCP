@@ -263,7 +263,7 @@ if (count($_POST) && $params->get('additem')) {
 				$cols = array('id', 'name_english', 'name_japanese', 'type', 'weight');
 				$bind = array($itemID, $identifier, $itemName, $type, $weight*10);
 				$vals = array(
-					'view'           => $viewID,
+					'view_sprite'           => $viewID,
 					'slots'          => $slots,
 					'price_buy'      => $npcBuy,
 					'price_sell'     => $npcSell,

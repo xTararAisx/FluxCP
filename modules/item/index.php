@@ -72,10 +72,10 @@ try {
 				if (count($itemTypeSplit) == 2 && is_numeric($itemType2) && (floatval($itemType2) == intval($itemType2))) {
 					$itemTypes2 = Flux::config('ItemTypes2')->toArray();
 					if (array_key_exists($itemType, $itemTypes2) && array_key_exists($itemType2, $itemTypes2[$itemType]) && $itemTypes2[$itemType][$itemType2]) {
-						$sqlpartial .= "AND view = ? ";
+						$sqlpartial .= "AND view_sprite = ? ";
 						$bind[]      = $itemType2;
 					} else {
-						$sqlpartial .= 'AND view IS NULL ';
+						$sqlpartial .= 'AND view_sprite IS NULL ';
 					}
 				}
 			} else {
@@ -265,7 +265,7 @@ try {
 	$col  = "origin_table, items.id AS item_id, name_japanese AS name, type, ";
 	$col .= "IFNULL(equip_locations, 0) AS equip_locations, price_buy, weight/10 AS weight, ";
 	$col .= "defence AS defense, `range`, slots, refineable, cost, $shopTable.id AS shop_item_id, ";
-	$col .= "IFNULL(price_sell, FLOOR(price_buy/2)) AS price_sell, view, atk, matk";
+	$col .= "IFNULL(price_sell, FLOOR(price_buy/2)) AS price_sell, view_sprite as view, atk, matk";
 	
 	$sql  = $paginator->getSQL("SELECT $col FROM $tableName $sqlpartial GROUP BY items.id");
 	$sth  = $server->connection->getStatement($sql);

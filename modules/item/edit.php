@@ -16,7 +16,7 @@ if (!$itemID) {
 	$this->deny();
 }
 
-$col  = "id, view, type, name_english, name_japanese, slots, price_buy, price_sell, weight/10 AS weight, ";
+$col  = "id, view_sprite as view, type, name_english, name_japanese, slots, price_buy, price_sell, weight/10 AS weight, ";
 $col .= "defence, `range`, weapon_level, equip_level_min, equip_level_max, refineable, equip_locations, equip_upper, ";
 $col .= "equip_jobs, equip_genders, script, equip_script, unequip_script, origin_table, atk, matk";
 
@@ -300,7 +300,7 @@ if ($item) {
 				$cols = array('id', 'name_english', 'name_japanese', 'type', 'weight', 'equip_locations');
 				$bind = array($itemID, $identifier, $itemName, $type, $weight*10, $equipLocs);
 				$vals = array(
-					'view'           => $viewID,
+					'view_sprite'           => $viewID,
 					'slots'          => $slots,
 					'price_buy'      => $npcBuy,
 					'price_sell'     => $npcSell,

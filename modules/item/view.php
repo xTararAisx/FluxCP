@@ -18,7 +18,7 @@ $col  = 'items.id AS item_id, name_english AS identifier, ';
 $col .= 'name_japanese AS name, type, ';
 $col .= 'price_buy, price_sell, weight/10 AS weight, defence, `range`, slots, ';
 $col .= 'equip_jobs, equip_upper, equip_genders, equip_locations, equip_level_min, equip_level_max, ';
-$col .= 'weapon_level, refineable, view, script, equip_script, unequip_script, origin_table, ';
+$col .= 'weapon_level, refineable, view_sprite as view, script, equip_script, unequip_script, origin_table, ';
 $col .= "$shopTable.cost, $shopTable.id AS shop_item_id, atk, matk";
 
 $sql  = "SELECT $col FROM {$server->charMapDatabase}.items ";

@@ -17,7 +17,7 @@ $tempTable = new Flux_TemporaryTable($server->connection, $tableName, $fromTable
 $col  = "name_english, name_japanese, type, price_buy, price_sell, ";
 $col .= "weight, defence, `range`, slots, equip_jobs, equip_upper, ";
 $col .= "equip_genders, equip_locations, weapon_level, equip_level_min, refineable, ";
-$col .= "view, script, equip_script, unequip_script, atk, matk";
+$col .= "view_sprite as view, script, equip_script, unequip_script, atk, matk";
 
 $sql = "SELECT $col FROM $tableName WHERE id = ? LIMIT 1";
 $sth = $server->connection->getStatement($sql);
@@ -54,7 +54,7 @@ if ($item && count($_POST) && $params->get('copyitem')) {
 			$col  = "id, name_english, name_japanese, type, price_buy, price_sell, ";
 			$col .= "weight, defence, `range`, slots, equip_jobs, equip_upper, ";
 			$col .= "equip_genders, equip_locations, weapon_level, equip_level_min, refineable, ";
-			$col .= "view, script, equip_script, unequip_script, atk, matk";
+			$col .= "view_sprite as view, script, equip_script, unequip_script, atk, matk";
 
 			$bind = array(
 				$copyID, $item->name_english, $item->name_japanese, $item->type, $item->price_buy, $item->price_sell,
